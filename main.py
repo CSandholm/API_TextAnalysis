@@ -1,4 +1,4 @@
-from app_handler import AppHandler, create_app
+from app.app_handler import create_app, AppHandler
 import uvicorn
 
 app = create_app()
