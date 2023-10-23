@@ -4,7 +4,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from scipy.special import softmax
 
 
-class Sentiment:
+class SvSentiment:
     def __init__(self):
         with open("model_config.json", "r") as f:
             config = json.load(f)

@@ -1,10 +1,10 @@
-import sv_sentiment_procedure
+from sv_sentiment_procedure import SvSentiment
 
 
 class SentimentHandler:
     def __init__(self, input):
         self.input = input
-        self.sentiment = sv_sentiment_procedure
+        self.sentiment = SvSentiment()
 
     async def get_sentiment(self):
         sentiment_result = await self.sentiment.calc_sentiment(self.input)
