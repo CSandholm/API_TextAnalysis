@@ -1,4 +1,4 @@
-from ai.sentiment_handler import SentimentHandler
+from ai.sv_sentiment_handler import SentimentHandler
 from app.api.api_utils.api_endpoints import ApiEndpoints
 from app.api.models.requests import *
 from app.api.models.responses import *
@@ -11,9 +11,9 @@ end = ApiEndpoints("app/configs/config_endpoints.json")
 @router.post(end.SV_SENTIMENT, response_model=SvSentimentResponse)
 async def sv_sentiment(request_data: Request):
     try:
-        sentiment_handler = SentimentHandler()
-        sentiment = sentiment_handler.get_sentiment(request_data.input)
-        return None
+        sentiment_handler = SentimentHandler(request_data.input)
+        sentiment = sentiment_handler.get_sentiment()
+        return sentiment
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
