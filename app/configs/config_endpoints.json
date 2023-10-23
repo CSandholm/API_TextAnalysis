@@ -1,0 +1,8 @@
+{
+  "sv_sentiment": "/sv_sentiment",
+  "en_sentiment": "/en_sentiment",
+  "topic": "/topic",
+  "translation": "/translation",
+  "summarize": "/summarize",
+  "detect_language": "/detect_language"
+}
