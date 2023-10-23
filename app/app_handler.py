@@ -11,8 +11,7 @@ class AppHandler:
         self.port = config.get("port")
 
 
-def create_app():
-    app = FastAPI()
-    app.include_router(api_router.router)
-
-    return app
+    def create_app(self):
+        app = FastAPI()
+        app.include_router(api_router.router)
+        return app

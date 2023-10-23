@@ -1,7 +1,7 @@
-from app.app_handler import create_app, AppHandler
+from app.app_handler import AppHandler
 import uvicorn
 
-app = create_app()
+app = AppHandler.create_app
 
 if __name__ == "__main__":
     app_handler = AppHandler()

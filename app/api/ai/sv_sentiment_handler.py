@@ -1,4 +1,4 @@
-from sv_sentiment_procedure import SvSentiment
+from Procedures import SvSentiment
 
 
 class SentimentHandler:
