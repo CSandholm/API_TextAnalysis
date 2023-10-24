@@ -2,6 +2,7 @@ from app.api.ai.sv_sentiment_handler import SvSentimentHandler
 from app.api.ai.en_sentiment_handler import EnSentimentHandler
 from app.api.ai.sv_summarize_text_handler import SvSummarizeTextHandler
 from app.api.ai.detect_language_handler import DetectLanguageHandler
+from app.api.ai.translation_handler import TranslationHandler
 from app.api.api_utils.api_endpoints import ApiEndpoints
 from app.api.models.requests import *
 from app.api.models.responses import *
@@ -30,7 +31,7 @@ async def en_sentiment(request_data: Request):
         sentiment_handler = EnSentimentHandler(request_data.input)
         task = asyncio.create_task(sentiment_handler.get_sentiment())
         sentiment = await task
-        return SvSentimentResponse(output=sentiment)
+        return EnSentimentResponse(output=sentiment)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -44,9 +45,12 @@ async def topic(request_data: Request):
 
 
 @router.post(end.TRANSLATION, response_model=TranslationResponse)
-async def translation(request_data: Request):
+async def translation(request_data: TranslationRequest):
     try:
-        return None
+        translation_handler = TranslationHandler(request_data.input, request_data.src_lang, request_data.tgt_lang)
+        task = asyncio.create_task(translation_handler.get_translation())
+        translation = await task
+        return TranslationResponse(output=translation, score=0)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -56,8 +60,8 @@ async def summarize(request_data: Request):
     try:
         summarize_handler = SvSummarizeTextHandler(request_data.input)
         task = asyncio.create_task(summarize_handler.get_summary())
-        sentiment = await task
-        return SummarizeResponse(output=sentiment)
+        summary = await task
+        return SummarizeResponse(output=summary)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

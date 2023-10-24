@@ -21,6 +21,28 @@ sv_summarize_text_tokenizer = AutoTokenizer.from_pretrained(config.get("sv_summa
 detect_language_model = AutoModelForSequenceClassification.from_pretrained(config.get("detect_language_model_path"))
 detect_language_tokenizer = AutoTokenizer.from_pretrained(config.get("detect_language_model_path"))
 
+sv_en_language_model = AutoModelForSeq2SeqLM.from_pretrained(config.get("sv_en_translation_model_path"))
+sv_en_tokenizer = AutoTokenizer.from_pretrained(config.get("sv_en_translation_model_path"))
+
+en_sv_language_model = AutoModelForSeq2SeqLM.from_pretrained(config.get("en_sv_translation_model_path"))
+en_sv_tokenizer = AutoTokenizer.from_pretrained(config.get("en_sv_translation_model_path"))
+
+
+class TranslationProcedure:
+    async def run_procedure(self, _input, src_lang):
+        if src_lang != "sv":
+            input_ids = en_sv_tokenizer(_input, return_tensors="pt").input_ids
+            outputs = en_sv_language_model.generate(input_ids=input_ids, num_beams=5, num_return_sequences=1)
+            result = en_sv_tokenizer.batch_decode(outputs, skip_special_tokens=True)
+            translation = result[0]
+            return translation
+        else:
+            input_ids = sv_en_tokenizer(_input, return_tensors="pt").input_ids
+            outputs = sv_en_language_model.generate(input_ids=input_ids, num_beams=5, num_return_sequences=1)
+            result = sv_en_tokenizer.batch_decode(outputs, skip_special_tokens=True)
+            translation = result[0]
+            return translation
+
 
 class DetectLanguageProcedure(Procedure):
     async def run_procedure(self, _input):
