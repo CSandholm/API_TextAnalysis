@@ -1,11 +1,15 @@
-from sv_sentiment_procedure import SvSentiment
+import asyncio
+import json
+
+from app.api.ai.procedures import SvSentimentProcedure
 
 
-class SentimentHandler:
-    def __init__(self, input):
-        self.input = input
-        self.sentiment = SvSentiment()
+class SvSentimentHandler:
+    def __init__(self, _input):
+        self.input = _input
+        self.sentiment = SvSentimentProcedure()
 
     async def get_sentiment(self):
-        sentiment_result = await self.sentiment.calc_sentiment(self.input)
+        task = asyncio.create_task(self.sentiment.run_procedure(self.input))
+        sentiment_result = await task
         return sentiment_result
