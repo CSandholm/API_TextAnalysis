@@ -1,4 +1,5 @@
 from app.api.ai.sv_sentiment_handler import SvSentimentHandler
+from app.api.ai.en_sentiment_handler import EnSentimentHandler
 from app.api.api_utils.api_endpoints import ApiEndpoints
 from app.api.models.requests import *
 from app.api.models.responses import *
@@ -24,7 +25,10 @@ async def sv_sentiment(request_data: Request):
 @router.post(end.EN_SENTIMENT, response_model=EnSentimentResponse)
 async def en_sentiment(request_data: Request):
     try:
-        return None
+        sentiment_handler = EnSentimentHandler(request_data.input)
+        task = asyncio.create_task(sentiment_handler.get_sentiment())
+        sentiment = await task
+        return SvSentimentResponse(output=sentiment)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

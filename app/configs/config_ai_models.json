@@ -1,3 +1,4 @@
 {
-  "sv_sentiment_model_path": "C:/Users/CharlesSandholm/PycharmProjects/AI_APIs/API_TextAnalysis/ai_models/sv_sentiment"
+  "sv_sentiment_model_path": "C:/Users/CharlesSandholm/PycharmProjects/AI_APIs/API_TextAnalysis/ai_models/sv_sentiment",
+  "en_sentiment_model_path": "C:/Users/CharlesSandholm/PycharmProjects/AI_APIs/API_TextAnalysis/ai_models/en_sentiment"
 }
