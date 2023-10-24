@@ -1,6 +1,7 @@
 from app.api.ai.sv_sentiment_handler import SvSentimentHandler
 from app.api.ai.en_sentiment_handler import EnSentimentHandler
 from app.api.ai.sv_summarize_text_handler import SvSummarizeTextHandler
+from app.api.ai.detect_language_handler import DetectLanguageHandler
 from app.api.api_utils.api_endpoints import ApiEndpoints
 from app.api.models.requests import *
 from app.api.models.responses import *
@@ -65,6 +66,9 @@ async def summarize(request_data: Request):
 @router.post(end.DETECT_LANGUAGE, response_model=DetectLanguageResponse)
 async def detect_language(request_data: Request):
     try:
-        return None
+        summarize_handler = DetectLanguageHandler(request_data.input)
+        task = asyncio.create_task(summarize_handler.get_language())
+        result = await task
+        return DetectLanguageResponse(output=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -1,6 +1,8 @@
 import json
+import torch
 
 from app.api.ai.ABCProcedures import Procedure
+from app.api.ai.ai_utils import languages
 from scipy.special import softmax
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoModelForSeq2SeqLM
 
@@ -15,6 +17,22 @@ en_sentiment_tokenizer = AutoTokenizer.from_pretrained(config.get("en_sentiment_
 
 sv_summarize_text_model = AutoModelForSeq2SeqLM.from_pretrained(config.get("sv_summarize_text_path"))
 sv_summarize_text_tokenizer = AutoTokenizer.from_pretrained(config.get("sv_summarize_text_path"))
+
+detect_language_model = AutoModelForSequenceClassification.from_pretrained(config.get("detect_language_model_path"))
+detect_language_tokenizer = AutoTokenizer.from_pretrained(config.get("detect_language_model_path"))
+
+
+class DetectLanguageProcedure(Procedure):
+    async def run_procedure(self, _input):
+        tokens = detect_language_tokenizer.encode(_input, return_tensors='pt')
+        result = detect_language_model(tokens)
+        result_logits = result.logits
+        result_index = int(torch.argmax(result_logits))
+        result_list = languages.get_language_code(result_index)
+        score = str(round(result_logits[0][result_index].item()))
+        result_list.append(score)
+
+        return result_list
 
 
 class SvSentimentProcedure(Procedure):
