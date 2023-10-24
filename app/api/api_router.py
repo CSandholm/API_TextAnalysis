@@ -1,5 +1,6 @@
 from app.api.ai.sv_sentiment_handler import SvSentimentHandler
 from app.api.ai.en_sentiment_handler import EnSentimentHandler
+from app.api.ai.sv_summarize_text_handler import SvSummarizeTextHandler
 from app.api.api_utils.api_endpoints import ApiEndpoints
 from app.api.models.requests import *
 from app.api.models.responses import *
@@ -52,7 +53,11 @@ async def translation(request_data: Request):
 @router.post(end.SUMMARIZE, response_model=SummarizeResponse)
 async def summarize(request_data: Request):
     try:
-        return None
+        summarize_handler = SvSummarizeTextHandler(request_data.input)
+        task = asyncio.create_task(summarize_handler.get_summary())
+        sentiment = await task
+        return SummarizeResponse(output=sentiment)
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
