@@ -7,8 +7,8 @@ class AppHandler:
     def __init__(self):
         with open("app/configs/config_app.json") as f:
             config = json.load(f)
-        self.host = config.get("host")
-        self.port = config.get("port")
+        self.host = str(config.get("host"))
+        self.port = int(config.get("port"))
 
 
 def create_app():
