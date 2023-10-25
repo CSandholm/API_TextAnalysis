@@ -6,6 +6,7 @@ from app.configs.config_logging.logger import config_logger
 
 config_logger()
 logger = logging.getLogger(__name__)
+logger.info("Logging configured")
 app = create_app()
 
 

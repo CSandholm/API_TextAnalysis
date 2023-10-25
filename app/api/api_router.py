@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from fastapi import APIRouter, HTTPException
@@ -11,7 +12,6 @@ from app.api.api_utils.api_endpoints import ApiEndpoints
 from app.api.models.requests import *
 from app.api.models.responses import *
 
-import asyncio
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -28,8 +28,9 @@ async def sv_sentiment(request_data: Request):
         task = asyncio.create_task(sentiment_handler.get_sentiment())
         logger.info("Calling task")
         sentiment = await task
-        logger.info(f"Return {sentiment}")
+        logger.info(f"Return: {sentiment}")
         return SvSentimentResponse(output=sentiment)
+
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
         logger.info(f"Call failed: {exception}")
@@ -46,8 +47,9 @@ async def en_sentiment(request_data: Request):
         task = asyncio.create_task(sentiment_handler.get_sentiment())
         logger.info("Calling task")
         sentiment = await task
-        logger.info(f"Return {sentiment}")
+        logger.info(f"Return: {sentiment}")
         return EnSentimentResponse(output=sentiment)
+
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
         logger.info(f"Call failed: {exception}")
@@ -64,8 +66,9 @@ async def translation(request_data: TranslationRequest):
         task = asyncio.create_task(translation_handler.get_translation())
         logger.info("Calling task")
         translation = await task
-        logger.info(f"Return {translation}")
+        logger.info(f"Return: {translation}")
         return TranslationResponse(output=translation, score=0)
+
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
         logger.info(f"Call failed: {exception}")
@@ -82,7 +85,7 @@ async def summarize(request_data: Request):
         task = asyncio.create_task(summarize_handler.get_summary())
         logger.info("Calling task")
         summary = await task
-        logger.info(f"Return {summary}")
+        logger.info(f"Return: {summary}")
         return SummarizeResponse(output=summary)
 
     except Exception as e:
@@ -101,8 +104,9 @@ async def detect_language(request_data: Request):
         task = asyncio.create_task(summarize_handler.get_language())
         logger.info("Calling task")
         result = await task
-        logger.info(f"Return {result}")
+        logger.info(f"Return: {result}")
         return DetectLanguageResponse(output=result)
+
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
         logger.info(f"Call failed: {exception}")

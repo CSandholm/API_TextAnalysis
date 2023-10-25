@@ -15,21 +15,21 @@ class TranslationProcedure:
         logger.info("Translation Procedure")
         try:
             if src_lang != "sv":
-                logger.info("English to Swedish")
+                logger.info("Translating English to Swedish")
                 input_ids = models.en_sv_tokenizer(_input, return_tensors="pt").input_ids
                 outputs = models.en_sv_language_model.generate(input_ids=input_ids, num_beams=5, num_return_sequences=1)
                 result = models.en_sv_tokenizer.batch_decode(outputs, skip_special_tokens=True)
                 translation = result[0]
-                logger.info("Returning translation")
+                logger.info("Return Translation Procedure Result")
                 return translation
 
             else:
-                logger.info("Swedish to English")
+                logger.info("Translating Swedish to English")
                 input_ids = models.sv_en_tokenizer(_input, return_tensors="pt").input_ids
                 outputs = models.sv_en_language_model.generate(input_ids=input_ids, num_beams=5, num_return_sequences=1)
                 result = models.sv_en_tokenizer.batch_decode(outputs, skip_special_tokens=True)
                 translation = result[0]
-                logger.info("Returning Translation Result")
+                logger.info("Return Translation Procedure Result")
                 return translation
 
         except Exception as e:
@@ -48,7 +48,7 @@ class DetectLanguageProcedure(Procedure):
             result_list = languages.get_language_code(result_index)
             score = str(round(result_logits[0][result_index].item()))
             result_list.append(score)
-            logger.info(f"Returning Detect Language Result: {result_list}")
+            logger.info(f"Return Detect Language Procedure Result")
             return result_list
 
         except Exception as e:
@@ -64,7 +64,7 @@ class SvSentimentProcedure(Procedure):
             result = models.sv_sentiment_model(tokens)
             output_np = result.logits[0].detach().numpy()
             output = softmax(output_np)
-            logger.info(f"Returning Sv Sentiment Result: {output}")
+            logger.info(f"Return Sv Sentiment Procedure Result")
             return output
 
         except Exception as e:
@@ -80,7 +80,7 @@ class EnSentimentProcedure(Procedure):
             result = models.en_sentiment_model(tokens)
             output_np = result.logits[0].detach().numpy()
             output = softmax(output_np)
-            logger.info(f"En Sentiment Procedure Result: {output}")
+            logger.info(f"Return En Sentiment Procedure Result")
             return output
 
         except Exception as e:
@@ -95,7 +95,7 @@ class SvSummarizeTextProcedure(Procedure):
             tokens = models.sv_summarize_text_tokenizer(_input, return_tensors="pt").input_ids
             outputs = models.sv_summarize_text_model.generate(input_ids=tokens, max_length=130, num_beams=5, num_return_sequences=1)
             result = models.sv_summarize_text_tokenizer.batch_decode(outputs, skip_special_tokens=True)
-            logger.info(f"Sv Summarize Procedure Result: {result[0]}")
+            logger.info(f"Return Sv Summarize Procedure Result")
             return result[0]
 
         except Exception as e:
