@@ -1,7 +1,10 @@
 import json
+import logging
+
 from app.api import api_router
 from fastapi import FastAPI
 
+logger = logging.getLogger(__name__)
 
 class AppHandler:
     def __init__(self):
@@ -12,7 +15,9 @@ class AppHandler:
 
 
 def create_app():
+    logger.info("Create app")
     app = FastAPI()
+    logger.info("Include router")
     app.include_router(api_router.router)
-
+    logger.info("Return app")
     return app

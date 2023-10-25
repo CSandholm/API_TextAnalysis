@@ -5,7 +5,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, Auto
 
 class Models:
     def __init__(self):
-        with open("C:/Users/CharlesSandholm/PycharmProjects/AI_APIs/API_TextAnalysis/app/configs/config_ai_models.json") as f:
+        with open("app/configs/config_ai_models.json") as f:
             config = json.load(f)
         self.sv_sentiment_model = AutoModelForSequenceClassification.from_pretrained(config.get("sv_sentiment_model_path"))
         self.sv_sentiment_tokenizer = AutoTokenizer.from_pretrained(config.get("sv_sentiment_model_path"))
