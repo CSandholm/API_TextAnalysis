@@ -6,7 +6,6 @@ from logging.handlers import TimedRotatingFileHandler
 
 
 def config_logger():
-
         current_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
         # New handler and Remove the previous handler
@@ -32,4 +31,3 @@ def config_logger():
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
         logger.setLevel(logging.INFO)
-

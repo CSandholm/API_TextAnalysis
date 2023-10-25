@@ -6,6 +6,7 @@ from fastapi import FastAPI
 
 logger = logging.getLogger(__name__)
 
+
 class AppHandler:
     def __init__(self):
         with open("app/configs/config_app.json") as f:
