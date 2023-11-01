@@ -9,6 +9,9 @@ logger = logging.getLogger(__name__)
 logger.info("Logging configured")
 app = create_app()
 
+def main():
+    logger.info("Start up")
+
 
 if __name__ == "__main__":
     app_handler = AppHandler()
