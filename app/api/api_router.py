@@ -7,6 +7,7 @@ from app.api.ai.sv_sentiment_handler import SvSentimentHandler
 from app.api.ai.en_sentiment_handler import EnSentimentHandler
 from app.api.ai.sv_summarize_text_handler import SvSummarizeTextHandler
 from app.api.ai.detect_language_handler import DetectLanguageHandler
+from app.api.ai.topic_handler import TopicHandler
 from app.api.ai.translation_handler import TranslationHandler
 from app.api.api_utils.api_endpoints import ApiEndpoints
 from app.api.models.requests import *
@@ -65,9 +66,9 @@ async def translation(request_data: TranslationRequest):
         logger.info("Creating asyncio task of get_translation")
         task = asyncio.create_task(translation_handler.get_translation())
         logger.info("Calling task")
-        translation = await task
-        logger.info(f"Return: {translation}")
-        return TranslationResponse(output=translation, score=0)
+        result = await task
+        logger.info(f"Return: {result}")
+        return TranslationResponse(output=result, score=0)
 
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
@@ -115,7 +116,15 @@ async def detect_language(request_data: Request):
 
 @router.post(end.TOPIC, response_model=TopicResponse)
 async def topic(request_data: Request):
+    logger.info("Topic called")
     try:
-        return None
+        logger.info(f"Topic handler, input: {request_data.input}")
+        topic_handler = TopicHandler(request_data.input)
+        logger.info("Creating asyncio task of get_topic")
+        task = asyncio.create_task(topic_handler.get_topics())
+        logger.info("Calling task")
+        result = await task
+        logger.info(f"Return: {result}")
+        return TopicResponse(output=result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

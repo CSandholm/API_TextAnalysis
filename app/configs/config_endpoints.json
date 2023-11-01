@@ -1,7 +1,7 @@
 {
   "sv_sentiment": "/swe_sentiment/",
   "en_sentiment": "/eng_sentiment/",
-  "topic": "/categorize/healthcare",
+  "topic": "/topic/",
   "translation": "/translate_string/",
   "summarize": "/summarize/",
   "detect_language": "/detect_language/"
