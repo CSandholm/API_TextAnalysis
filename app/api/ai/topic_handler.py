@@ -1,6 +1,4 @@
 # Get topic vocabulary from analytics?
-# Get topic vocabulary from json file? - THAT json file is updated regularly
-#
 
 import asyncio
 

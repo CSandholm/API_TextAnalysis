@@ -29,13 +29,17 @@ async def sv_sentiment(request_data: Request):
         task = asyncio.create_task(sentiment_handler.get_sentiment())
         logger.info("Calling task")
         sentiment = await task
+
+        if sentiment is None:
+            raise Exception("The input could not be processed by the AI. Check language compatibility or try sending a shorter string.")
+
         logger.info(f"Return: {sentiment}")
         return SvSentimentResponse(output=sentiment)
 
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
-        logger.info(f"Call failed: {exception}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.info(f"Call failed: {e}")
+        raise exception
 
 
 @router.post(end.EN_SENTIMENT, response_model=EnSentimentResponse)
@@ -48,12 +52,16 @@ async def en_sentiment(request_data: Request):
         task = asyncio.create_task(sentiment_handler.get_sentiment())
         logger.info("Calling task")
         sentiment = await task
+
+        if sentiment is None:
+            raise Exception("The input could not be processed by the AI. Check language compatibility or try sending a shorter string.")
+
         logger.info(f"Return: {sentiment}")
         return EnSentimentResponse(output=sentiment)
 
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
-        logger.info(f"Call failed: {exception}")
+        logger.info(f"Call failed: {e}")
         raise exception
 
 
@@ -67,12 +75,16 @@ async def translation(request_data: TranslationRequest):
         task = asyncio.create_task(translation_handler.get_translation())
         logger.info("Calling task")
         result = await task
+
+        if result is None:
+            raise Exception("The input could not be processed by the AI. Check language compatibility or try sending a shorter string.")
+
         logger.info(f"Return: {result}")
         return TranslationResponse(output=result, score=0)
 
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
-        logger.info(f"Call failed: {exception}")
+        logger.info(f"Call failed: {e}")
         raise exception
 
 
@@ -86,12 +98,16 @@ async def summarize(request_data: Request):
         task = asyncio.create_task(summarize_handler.get_summary())
         logger.info("Calling task")
         summary = await task
+
+        if summary is None:
+            raise Exception("The input could not be processed by the AI. Check language compatibility or try sending a shorter string.")
+
         logger.info(f"Return: {summary}")
         return SummarizeResponse(output=summary)
 
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
-        logger.info(f"Call failed: {exception}")
+        logger.info(f"Call failed: {e}")
         raise exception
 
 
@@ -105,12 +121,16 @@ async def detect_language(request_data: Request):
         task = asyncio.create_task(summarize_handler.get_language())
         logger.info("Calling task")
         result = await task
+
+        if result is None:
+            raise Exception("The input could not be processed by the AI. Check language compatibility or try sending a shorter string.")
+
         logger.info(f"Return: {result}")
         return DetectLanguageResponse(output=result)
 
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
-        logger.info(f"Call failed: {exception}")
+        logger.info(f"Call failed: {e}")
         raise exception
 
 
@@ -124,7 +144,14 @@ async def topic(request_data: Request):
         task = asyncio.create_task(topic_handler.get_topics())
         logger.info("Calling task")
         result = await task
+
+        if result is None:
+            raise Exception("The input could not be processed by the AI. Check language compatibility or try sending a shorter string.")
+
         logger.info(f"Return: {result}")
         return TopicResponse(output=result)
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        exception = HTTPException(status_code=500, detail=str(e))
+        logger.info(f"Call failed: {e}")
+        raise exception

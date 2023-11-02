@@ -14,15 +14,18 @@ models = Models()
 
 
 class TopicProcedure(Procedure):
+    def __init__(self):
+        self.vocabulary = self.get_vocabulary()
+
     async def run_procedure(self, _input):
 
         tokens = re.findall(r'\b\w+\b', _input.lower())
         mapped_tokens = []
 
-        vocabulary = self.get_vocabulary()
+        self.get_vocabulary()
 
         for token in tokens:
-            for common_word, synonyms in vocabulary.items():
+            for common_word, synonyms in self.vocabulary.items():
                 if common_word not in mapped_tokens and token in synonyms:
                     mapped_tokens.append(common_word)
                     logger.info(f"Added: {common_word}")
@@ -34,6 +37,13 @@ class TopicProcedure(Procedure):
         with open("app/api/ai/ai_utils/topic_vocabulary.json", 'r', encoding='utf-8') as f:
             vocabulary = json.load(f)
         return vocabulary
+
+    def is_tensors_within_limit(self, tokens, max_position_embeddings):
+        tensor_size = tokens.size(dim=1)
+        if tensor_size > max_position_embeddings:
+            logger.warning(f"Token size larger than model max position embeddings: {tensor_size}")
+            return False
+        return True
 
 
 class TranslationProcedure:
@@ -62,6 +72,13 @@ class TranslationProcedure:
             logger.warning(f"Translation procedure failed: {e}")
             return None
 
+    def is_tensors_within_limit(self, tokens, max_position_embeddings):
+        tensor_size = tokens.size(dim=1)
+        if tensor_size > max_position_embeddings:
+            logger.warning(f"Token size larger than model max position embeddings: {tensor_size}")
+            return False
+        return True
+
 
 class DetectLanguageProcedure(Procedure):
     async def run_procedure(self, _input):
@@ -79,7 +96,14 @@ class DetectLanguageProcedure(Procedure):
 
         except Exception as e:
             logger.warning(f"Detect Language procedure failed: {e}")
-            return None
+            return e
+
+    def is_tensors_within_limit(self, tokens, max_position_embeddings):
+        tensor_size = tokens.size(dim=1)
+        if tensor_size > max_position_embeddings:
+            logger.warning(f"Token size larger than model max position embeddings: {tensor_size}")
+            return False
+        return True
 
 
 class SvSentimentProcedure(Procedure):
@@ -87,6 +111,10 @@ class SvSentimentProcedure(Procedure):
         try:
             logger.info("Sv Sentiment Procedure")
             tokens = models.sv_sentiment_tokenizer.encode(_input, return_tensors="pt")
+
+            if self.is_tensors_within_limit(tokens, models.en_sentiment_max_position_embeddings) is False:
+                return None
+
             result = models.sv_sentiment_model(tokens)
             output_np = result.logits[0].detach().numpy()
             output = softmax(output_np)
@@ -97,12 +125,23 @@ class SvSentimentProcedure(Procedure):
             logger.warning(f"Sv Sentiment procedure failed: {e}")
             return None
 
+    def is_tensors_within_limit(self, tokens, max_position_embeddings):
+        tensor_size = tokens.size(dim=1)
+        if tensor_size > max_position_embeddings:
+            logger.warning(f"Token size larger than model max position embeddings: {tensor_size}")
+            return False
+        return True
+
 
 class EnSentimentProcedure(Procedure):
     async def run_procedure(self, _input):
         try:
             logger.info("En Sentiment Procedure")
             tokens = models.en_sentiment_tokenizer.encode(_input, return_tensors="pt")
+
+            if self.is_tensors_within_limit(tokens, models.en_sentiment_max_position_embeddings) is False:
+                return None
+
             result = models.en_sentiment_model(tokens)
             output_np = result.logits[0].detach().numpy()
             output = softmax(output_np)
@@ -113,12 +152,23 @@ class EnSentimentProcedure(Procedure):
             logger.warning(f"En Sentiment procedure failed: {e}")
             return None
 
+    def is_tensors_within_limit(self, tokens, max_position_embeddings):
+        tensor_size = tokens.size(dim=1)
+        if tensor_size > max_position_embeddings:
+            logger.warning(f"Token size larger than model max position embeddings: {tensor_size}")
+            return False
+        return True
+
 
 class SvSummarizeTextProcedure(Procedure):
     async def run_procedure(self, _input):
         try:
             logger.info("Sv Summarize Procedure")
             tokens = models.sv_summarize_text_tokenizer(_input, return_tensors="pt").input_ids
+
+            if self.is_tensors_within_limit(tokens, models.en_sentiment_max_position_embeddings) is False:
+                return None
+
             outputs = models.sv_summarize_text_model.generate(input_ids=tokens, max_length=130, num_beams=5, num_return_sequences=1)
             result = models.sv_summarize_text_tokenizer.batch_decode(outputs, skip_special_tokens=True)
             logger.info(f"Return Sv Summarize Procedure Result")
@@ -127,3 +177,10 @@ class SvSummarizeTextProcedure(Procedure):
         except Exception as e:
             logger.warning(f"Sv Summarize Procedure failed: {e}")
             return None
+
+    def is_tensors_within_limit(self, tokens, max_position_embeddings):
+        tensor_size = tokens.size(dim=1)
+        if tensor_size > max_position_embeddings:
+            logger.warning(f"Token size larger than model max position embeddings: {tensor_size}")
+            return False
+        return True
