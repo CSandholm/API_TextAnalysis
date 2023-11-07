@@ -1,6 +1,6 @@
 import asyncio
 
-from app.api.ai.procedures import TranslationProcedure
+from app.api.ai.ai_executions.translation import TranslationProcedure
 
 
 class TranslationHandler:

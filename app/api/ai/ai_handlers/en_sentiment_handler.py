@@ -1,12 +1,12 @@
 import asyncio
 
-from app.api.ai.procedures import EnSentimentProcedure
+from app.api.ai.ai_executions.en_sentiment import EnSentimentExecution
 
 
 class EnSentimentHandler:
     def __init__(self, _input):
         self.input = _input
-        self.sentiment = EnSentimentProcedure()
+        self.sentiment = EnSentimentExecution()
 
     async def get_sentiment(self):
         task = asyncio.create_task(self.sentiment.run_procedure(self.input))

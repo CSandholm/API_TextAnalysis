@@ -3,12 +3,12 @@ import logging
 
 from fastapi import APIRouter, HTTPException
 
-from app.api.ai.sv_sentiment_handler import SvSentimentHandler
-from app.api.ai.en_sentiment_handler import EnSentimentHandler
-from app.api.ai.sv_summarize_text_handler import SvSummarizeTextHandler
-from app.api.ai.detect_language_handler import DetectLanguageHandler
-from app.api.ai.topic_handler import TopicHandler
-from app.api.ai.translation_handler import TranslationHandler
+from app.api.ai.ai_handlers.sv_sentiment_handler import SvSentimentHandler
+from app.api.ai.ai_handlers.en_sentiment_handler import EnSentimentHandler
+from app.api.ai.ai_handlers.sv_summarize_text_handler import SvSummarizeTextHandler
+from app.api.ai.ai_handlers.detect_language_handler import DetectLanguageHandler
+from app.api.ai.ai_handlers.topic_handler import TopicHandler
+from app.api.ai.ai_handlers.translation_handler import TranslationHandler
 from app.api.api_utils.api_endpoints import ApiEndpoints
 from app.api.models.requests import *
 from app.api.models.responses import *
