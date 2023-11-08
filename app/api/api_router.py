@@ -13,7 +13,6 @@ from app.api.api_utils.api_endpoints import ApiEndpoints
 from app.api.models.requests import *
 from app.api.models.responses import *
 
-
 logger = logging.getLogger(__name__)
 router = APIRouter()
 end = ApiEndpoints("app/configs/config_endpoints.json")
@@ -135,11 +134,11 @@ async def detect_language(request_data: Request):
 
 
 @router.post(end.TOPIC, response_model=TopicResponse)
-async def topic(request_data: Request):
+async def topic(request_data: TopicRequest):
     logger.info("Topic called")
     try:
         logger.info(f"Topic handler, input: {request_data.input}")
-        topic_handler = TopicHandler(request_data.input)
+        topic_handler = TopicHandler(request_data.input, request_data.vocabulary, request_data.stopwords)
         logger.info("Creating asyncio task of get_topic")
         task = asyncio.create_task(topic_handler.get_topics())
         logger.info("Calling task")

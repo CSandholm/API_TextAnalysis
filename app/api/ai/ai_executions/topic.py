@@ -1,32 +1,40 @@
 import logging
-import json
-import re
 
 logger = logging.getLogger(__name__)
 
 
 class TopicExecution:
-    def __init__(self):
-        self.vocabulary = self.get_vocabulary()
+    async def run_procedure(self, _input, vocabulary, stopwords):
+        try:
+            logger.info("Topic Procedure")
+            filtered_words = await self.filter_input(_input, stopwords)
+            mapped_tokens = []
+            logger.info("Synonyms to lower")
+            for key, synonyms in vocabulary.items():
+                for i, synonym in enumerate(synonyms):
+                    synonyms[i] = synonym.lower()
 
-    async def run_procedure(self, _input):
+            for word in filtered_words:
+                key = vocabulary.get(word)
+                if key and key not in mapped_tokens:
+                    mapped_tokens.append(key)
+                else:
+                    for key, synonyms in vocabulary.items():
+                        if word in synonyms and key not in mapped_tokens:
+                            mapped_tokens.append(key)
+                            break
 
-        tokens = re.findall(r'\b\w+\b', _input.lower())
-        mapped_tokens = []
-
-        self.get_vocabulary()
-
-        for token in tokens:
-            for common_word, synonyms in self.vocabulary.items():
-                if common_word not in mapped_tokens and token in synonyms:
-                    mapped_tokens.append(common_word)
-                    logger.info(f"Added: {common_word}")
-                    break
-
-        return mapped_tokens
+            return mapped_tokens
+        except Exception:
+            raise Exception("Could not execute Topic execution")
 
     @classmethod
-    def get_vocabulary(cls):
-        with open("app/api/ai/ai_utils/topic_vocabulary.json", 'r', encoding='utf-8') as f:
-            vocabulary = json.load(f)
-        return vocabulary
+    async def filter_input(cls, _input, stopwords):
+        clean_input = _input.lower().split()
+        filtered_words = []
+        for word in stopwords:
+            word = word.lower()
+        for word in clean_input:
+            if word not in stopwords:
+                filtered_words.append(word)
+        return filtered_words
