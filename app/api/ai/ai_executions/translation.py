@@ -18,7 +18,7 @@ class TranslationProcedure:
                 if self.is_tensors_within_limit(input_ids, en_model.max_position_embeddings) is False:
                     return None
 
-                outputs = en_model.model.generate(input_ids=input_ids, num_beams=5, num_return_sequences=1)
+                outputs = en_model.model.generate(input_ids=input_ids, num_beams=10, num_return_sequences=1)
                 result = en_model.tokenizer.batch_decode(outputs, skip_special_tokens=True)
                 translation = result[0]
                 logger.info("Return Translation Procedure Result")
@@ -31,7 +31,7 @@ class TranslationProcedure:
                 if self.is_tensors_within_limit(input_ids, sv_model.max_position_embeddings) is False:
                     return None
 
-                outputs = sv_model.model.generate(input_ids=input_ids, num_beams=5, num_return_sequences=1)
+                outputs = sv_model.model.generate(input_ids=input_ids, num_beams=10, num_return_sequences=1)
                 result = sv_model.tokenizer.batch_decode(outputs, skip_special_tokens=True)
                 translation = result[0]
                 logger.info("Return Translation Procedure Result")

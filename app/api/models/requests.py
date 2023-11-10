@@ -9,8 +9,6 @@ class Request(BaseModel):
 
 class TopicRequest(BaseModel):
     input: str
-    vocabulary: Dict[str, List[str]]
-    stopwords: List[str]
 
 
 class TranslationRequest(BaseModel):

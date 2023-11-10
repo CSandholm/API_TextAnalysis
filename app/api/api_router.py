@@ -138,7 +138,7 @@ async def topic(request_data: TopicRequest):
     logger.info("Topic called")
     try:
         logger.info(f"Topic handler, input: {request_data.input}")
-        topic_handler = TopicHandler(request_data.input, request_data.vocabulary, request_data.stopwords)
+        topic_handler = TopicHandler(request_data.input)
         logger.info("Creating asyncio task of get_topic")
         task = asyncio.create_task(topic_handler.get_topics())
         logger.info("Calling task")
