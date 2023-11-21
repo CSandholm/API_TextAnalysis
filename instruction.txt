@@ -1,0 +1,50 @@
+Make sure to have Python 3.10 installed: https://www.python.org/downloads/
+
+Install virtual environment with "install_text_analysis_api_venv.bat"
+Install required packages with "install_text_analysis_api_requirements.bat"
+Create a log folder in "Api_TextAnalysis" folder.
+Copy models to "Api_TextAnalysis/ai_models" folder.
+Set configurations in config files under "Api_TextAnalysis/app/configs"
+
+
+
+
+
+
+Run as windows service:
+
+Download NSSM: https://nssm.cc/download
+Add the path to nssm.exe to environment path
+In cmd run: "call nssm.exe install TextAnalyzerService '%cd%\start_text_analysis_api.bat'"
+
+You can now start the service:
+Start a service - sc TextAnalyzerService
+
+'sc' command to manage services in command line:
+Delete a service - sc delete TextAnalyzerService
+Start a service - sc start TextAnalyzerService
+Pause a service - sc pause TextAnalyzerService
+Stop a service - sc stop TextAnalyzerService
+
+View status of a service in command line:
+sc query my_flask_app
+
+You can see and change the service in windows services/tjänster.
+Default might be to run the service on system start-up automatically.
+
+Edit the service using nssm GUI:
+nssm edit TextAnalyzerService
+
+More info: https://nagasudhir.blogspot.com/2022/09/run-python-flask-server-as-windows.html
+
+If you want to implement logging, make sure to create the log directory before.
+Example:
+call nssm.exe set my_flask_app AppStdout "%cd%\logs\my_flask_app_logs.log"
+call nssm.exe set my_flask_app AppStderr "%cd%\logs\my_flask_app_logs.log"
+call nssm set my_flask_app AppRotateFiles 1
+call nssm set my_flask_app AppRotateOnline 1
+call nssm set my_flask_app AppRotateSeconds 86400
+call nssm set my_flask_app AppRotateBytes 1048576
+
+- Probably a good idea to have a dedicated folder in logs: logs/service_logs/, since the application is logging in logs.
+

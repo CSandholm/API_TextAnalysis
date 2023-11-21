@@ -1,3 +1,9 @@
 {
-  
+  "sv_sentiment_model_path": "app/../ai_models/sv_sentiment",
+  "en_sentiment_model_path": "app/../ai_models/en_sentiment",
+  "sv_summarize_text_path": "app/../ai_models/sv_summarize_text",
+  "detect_language_model_path": "app/../ai_models/detect_language",
+  "en_sv_translation_model_path": "app/../ai_models/translation/en_sv",
+  "sv_en_translation_model_path": "app/../ai_models/translation/sv_en",
+  "sv_topic_model_path": "app/../ai_models/sv_topic/keybert_multilingual"
 }
