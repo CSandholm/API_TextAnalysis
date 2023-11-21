@@ -1,6 +1,7 @@
-from abc import ABC, abstractmethod
 import json
+import torch
 
+from abc import ABC, abstractmethod
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoModelForSeq2SeqLM
 
 
@@ -61,4 +62,12 @@ class EnSvTranslationModel(AiModel):
             config = json.load(f)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(config.get("en_sv_translation_model_path"))
         self.tokenizer = AutoTokenizer.from_pretrained(config.get("en_sv_translation_model_path"))
+        self.max_position_embeddings = 512
+
+
+class SvTopicModel(AiModel):
+    def __init__(self):
+        with open("app/configs/config_ai_models.json") as f:
+            config = json.load(f)
+        self.model = torch.load(config.get("sv_topic_model_path"))
         self.max_position_embeddings = 512
