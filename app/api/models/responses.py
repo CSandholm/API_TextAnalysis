@@ -2,6 +2,9 @@ from typing import List
 from pydantic import BaseModel
 
 
+class MulSentimentResponse(BaseModel):
+    output: List[float]
+
 class SvSentimentResponse(BaseModel):
     output: List[float]
 
