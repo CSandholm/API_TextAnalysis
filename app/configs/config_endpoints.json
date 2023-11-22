@@ -1,6 +1,7 @@
 {
   "sv_sentiment": "/swe_sentiment/",
   "en_sentiment": "/eng_sentiment/",
+  "mul_sentiment": "/mul_sentiment/",
   "topic": "/topic/",
   "translation": "/translate_string/",
   "summarize": "/summarize/",

@@ -11,3 +11,4 @@ class ApiEndpoints:
         self.TRANSLATION = data.get("translation")
         self.SUMMARIZE = data.get("summarize")
         self.DETECT_LANGUAGE = data.get("detect_language")
+        self.MUL_SENTIMENT = data.get("mul_sentiment")

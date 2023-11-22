@@ -3,6 +3,7 @@ import logging
 
 from fastapi import APIRouter, HTTPException
 
+from app.api.ai.ai_handlers.mul_sentiment_handler import MulSentimentHandler
 from app.api.ai.ai_handlers.sv_sentiment_handler import SvSentimentHandler
 from app.api.ai.ai_handlers.en_sentiment_handler import EnSentimentHandler
 from app.api.ai.ai_handlers.sv_summarize_text_handler import SvSummarizeTextHandler
@@ -34,6 +35,29 @@ async def sv_sentiment(request_data: Request):
 
         logger.info(f"Return: {sentiment}")
         return SvSentimentResponse(output=sentiment)
+
+    except Exception as e:
+        exception = HTTPException(status_code=500, detail=str(e))
+        logger.info(f"Call failed: {e}")
+        raise exception
+
+
+@router.post(end.MUL_SENTIMENT, response_model=MulSentimentResponse)
+async def mul_sentiment(request_data: Request):
+    logger.info("Mul sentiment called")
+    try:
+        logger.info(f"Create mul sentiment handler, input: {request_data.input}")
+        sentiment_handler = MulSentimentHandler(request_data.input)
+        logger.info("Creating asyncio task of get_sentiment")
+        task = asyncio.create_task(sentiment_handler.get_sentiment())
+        logger.info("Calling task")
+        sentiment = await task
+
+        if sentiment is None:
+            raise Exception("The input could not be processed by the AI. Check language compatibility or try sending a shorter string.")
+
+        logger.info(f"Return: {sentiment}")
+        return MulSentimentResponse(output=sentiment)
 
     except Exception as e:
         exception = HTTPException(status_code=500, detail=str(e))
