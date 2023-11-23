@@ -3,7 +3,7 @@ Make sure to have Python 3.10 installed: https://www.python.org/downloads/
 Install virtual environment with "install_text_analysis_api_venv.bat"
 Install required packages with "install_text_analysis_api_requirements.bat"
 Create a log folder in "Api_TextAnalysis" folder.
-Copy models to "Api_TextAnalysis/ai_models" folder.
+Copy models to "Api_TextAnalysis/ai_models".
 Set configurations in config files under "Api_TextAnalysis/app/configs"
 
 
