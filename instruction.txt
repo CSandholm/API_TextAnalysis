@@ -17,6 +17,9 @@ Download NSSM: https://nssm.cc/download
 Add the path to nssm.exe to environment path
 In cmd run: "call nssm.exe install TextAnalyzerService '%cd%\start_text_analysis_api.bat'"
 
+Edit the service using nssm GUI:
+nssm edit TextAnalyzerService
+
 You can now start the service:
 Start a service - sc TextAnalyzerService
 
@@ -32,8 +35,6 @@ sc query my_flask_app
 You can see and change the service in windows services/tjänster.
 Default might be to run the service on system start-up automatically.
 
-Edit the service using nssm GUI:
-nssm edit TextAnalyzerService
 
 More info: https://nagasudhir.blogspot.com/2022/09/run-python-flask-server-as-windows.html
 
