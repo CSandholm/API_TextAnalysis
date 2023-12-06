@@ -7,22 +7,28 @@ Endpoint info:
         - tar ett argument: input(string)
         - output: lista med tre floats [0]negative, [1]Neutral, [2]Postitive
 
-    "/mul_sentiment/" - Sentiment på flera språk, översätts till engelska och engelsk sentiment
+    "/mul_sentiment/" - Sentiment på flera språk, översätter till engelska och kör engelsk sentiment
         - tar ett argument: input(string)
         - output: lista med tre floats [0]negative, [1]Neutral, [2]Postitive
 
     "/topic/" - Top 5 nyckelord
         - tar ett argument: input(string)
-        - output: lista med stängar
+        - output: lista med strängar
 
-    "/translate_string/" - Översättning en-sv, sv-en, eller mul-en (stöd för 120 språk)
+    "/translate_string/" - Översättning en-sv, sv-en, eller mul-en med stöd för 120 språk
         - tar tre argument: input:str, src_lang:str, tgt_lang:str
         - output: output(string), score(float)
-        - Model som körs beror på src_lang: "sv", "en", "any", eller ""
+        - AIModellen som körs beror på på src_lang: "sv", "", "en", eller "any".
+
+        Notes:
+        TODO: Translation ska implementeras i Reportal TextAnalysisQuestionBatch, ny ExecuteTranslation, hämta språk från GetLanguage(question)
 
     "/summarize/" - Summera svensk text
         - tar ett argument: input(string)
         - output: output(string)
+
+        Notes:
+        TODO: Summering ska implementeras i Reportal TextAnalysisQuestionBatch, ny ExecuteSummarizeText.
 
     "/detect_language/" - Språkigenkänning
         - tar ett argument: input(string)
@@ -65,7 +71,6 @@ Model info:
              url = {https://kb-labb.github.io/posts/2023-06-16-a-robust-multi-label-sentiment-classifier-for-swedish/},
              year = {2023}
 
-
 	En sentiment:
 		model: cardiffnlp/twitter-roberta-base-sentiment-latest
 		info: https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest
@@ -89,3 +94,6 @@ Model info:
 	Detect language:
 		model: jb2k/bert-base-multilingual-cased-language-detection
 		info: https://huggingface.co/jb2k/bert-base-multilingual-cased-language-detection
+
+Notes:
+
