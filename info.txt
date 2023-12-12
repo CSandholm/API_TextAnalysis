@@ -1,0 +1,99 @@
+Endpoint info:
+    "/swe_sentiment/" - Sentiment på svenska
+        - tar ett argument: input(string)
+        - output: lista med tre floats [0]negative, [1]Neutral, [2]Postitive
+
+    "/eng_sentiment/" - Sentiment på engelska
+        - tar ett argument: input(string)
+        - output: lista med tre floats [0]negative, [1]Neutral, [2]Postitive
+
+    "/mul_sentiment/" - Sentiment på flera språk, översätter till engelska och kör engelsk sentiment
+        - tar ett argument: input(string)
+        - output: lista med tre floats [0]negative, [1]Neutral, [2]Postitive
+
+    "/topic/" - Top 5 nyckelord
+        - tar ett argument: input(string)
+        - output: lista med strängar
+
+    "/translate_string/" - Översättning en-sv, sv-en, eller mul-en med stöd för 120 språk
+        - tar tre argument: input:str, src_lang:str, tgt_lang:str
+        - output: output(string), score(float)
+        - AIModellen som körs beror på på src_lang: "sv", "", "en", eller "any".
+
+        Notes:
+        TODO: Translation ska implementeras i Reportal TextAnalysisQuestionBatch, ny ExecuteTranslation, hämta språk från GetLanguage(question)
+
+    "/summarize/" - Summera svensk text
+        - tar ett argument: input(string)
+        - output: output(string)
+
+        Notes:
+        TODO: Summering ska implementeras i Reportal TextAnalysisQuestionBatch, ny ExecuteSummarizeText.
+
+    "/detect_language/" - Språkigenkänning
+        - tar ett argument: input(string)
+        - output: Lista med strängar
+
+Model info:
+	Topic:
+		model: KeyBERT
+		info: https://maartengr.github.io/KeyBERT/index.html
+		@misc{grootendorst2020keybert,
+              author       = {Maarten Grootendorst},
+              title        = {KeyBERT: Minimal keyword extraction with BERT.},
+              year         = 2020,
+              publisher    = {Zenodo},
+              version      = {v0.3.0},
+              doi          = {10.5281/zenodo.4461265},
+              url          = {https://doi.org/10.5281/zenodo.4461265}
+            }
+
+	Translation:
+		sv_en model: Helsinki-NLP/opus-mt-sv-en
+		info: https://huggingface.co/Helsinki-NLP/opus-mt-sv-en
+
+		en_sv model: Helsinki-NLP/opus-mt-en-sv
+		info: https://huggingface.co/Helsinki-NLP/opus-mt-en-sv
+
+		mul_en model: Helsinki-NLP/opus-mt-mul-en
+		info: https://huggingface.co/Helsinki-NLP/opus-mt-mul-en
+
+	Sv summarize text:
+		model: Gabriel/bart-base-cnn-swe
+		info: https://huggingface.co/Gabriel/bart-base-cnn-swe
+
+	Sv sentiment:
+		model: KBLab/robust-swedish-sentiment-multiclass
+		info: https://huggingface.co/KBLab/robust-swedish-sentiment-multiclass
+		@misc{hägglöf2023a,
+             author = {Hägglöf, Hillevi},
+             title = {The KBLab Blog: A robust, multi-label sentiment classifier for Swedish},
+             url = {https://kb-labb.github.io/posts/2023-06-16-a-robust-multi-label-sentiment-classifier-for-swedish/},
+             year = {2023}
+
+	En sentiment:
+		model: cardiffnlp/twitter-roberta-base-sentiment-latest
+		info: https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest
+        @inproceedings{loureiro-etal-2022-timelms,
+            title = "{T}ime{LM}s: Diachronic Language Models from {T}witter",
+            author = "Loureiro, Daniel  and
+              Barbieri, Francesco  and
+              Neves, Leonardo  and
+              Espinosa Anke, Luis  and
+              Camacho-collados, Jose",
+            booktitle = "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics: System Demonstrations",
+            month = may,
+            year = "2022",
+            address = "Dublin, Ireland",
+            publisher = "Association for Computational Linguistics",
+            url = "https://aclanthology.org/2022.acl-demo.25",
+            doi = "10.18653/v1/2022.acl-demo.25",
+            pages = "251--260"
+        }
+
+	Detect language:
+		model: jb2k/bert-base-multilingual-cased-language-detection
+		info: https://huggingface.co/jb2k/bert-base-multilingual-cased-language-detection
+
+Notes:
+
